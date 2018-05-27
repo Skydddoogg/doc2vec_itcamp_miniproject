@@ -7,14 +7,14 @@ import numpy as np
 
 SIZE_OF_VECTOR = 20
 
-def process_doc2vec(csv_file):
+def process_doc2vec(csv_file_path):
 
     # Load model
     model = Doc2Vec.load("d2v.model")
 
     # Prepare data
-    df = pd.read_csv(csv_file).head(5)
-    data = df['Message'].head(5).as_matrix()
+    df = pd.read(csv_file_path)
+    data = df['Message'].as_matrix()
     vectors = [[] for i in range(SIZE_OF_VECTOR)]
 
     # Perform the vectors of the documents
@@ -27,15 +27,6 @@ def process_doc2vec(csv_file):
     for i in range(SIZE_OF_VECTOR):
         df['vector' + str(i)] = vectors[i]
 
-    return df
+    df.to_csv("data.csv", sep='\t', encoding='utf-8')
 
-def main():
-
-    args = (sys.argv)[1]
-    print(args)
-
-    dataframe = process_doc2vec(args)
-
-    dataframe.to_csv("data.csv", sep='\t', encoding='utf-8')
-
-main()
+process_doc2vec()
